@@ -1,9 +1,6 @@
 package annotations;
 
-import com.codeborne.selenide.CollectionCondition;
-import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,12 +15,14 @@ import java.util.stream.Stream;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static org.openqa.selenium.By.partialLinkText;
 
 public class WebTest {
+
     @ValueSource(strings = {
             "SQL",
-            "Java",
-            "Selenium"
+            "Python",
+            "Java"
     })
 
     @ParameterizedTest(name = "Check search courses {0}")
@@ -33,17 +32,18 @@ public class WebTest {
 
         //Steps
         $(".search-form__input").setValue(testData).pressEnter();
-        $$(".catalog-course-cards ember-view")
+        $$(".catalog-block__content")
                 .find(Condition.text(testData))
                 .shouldBe(visible);
 
     }
 
     @CsvSource(value = {
-            "SQL | njjjjjj, hhjjkkl",
-            "Python | lkklll"
+            "SQL | Online-курс по основам SQL",
+            "Python | Для успешного прохождения курса необходимо знать основы языка Python"
     },
             delimiter = '|')
+
     @ParameterizedTest(name = "Проверка по слову {0}, ожидается {1}")
     void anySearchCSVTest(String testData, String testResult) {
         //Precondition
@@ -51,7 +51,7 @@ public class WebTest {
 
         //Steps
         $(".search-form__input").setValue(testData).pressEnter();
-        $$(".catalog-course-cards ember-view")
+        $$(".catalog-block__content")
                 .find(Condition.text(testResult))
                 .has(text(testData));
 
