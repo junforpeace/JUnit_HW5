@@ -2,18 +2,14 @@ package annotations;
 
 import com.codeborne.selenide.*;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-
 import java.util.List;
 import java.util.stream.Stream;
-
-import static com.codeborne.selenide.CollectionCondition.*;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
@@ -24,7 +20,6 @@ public class WebTest {
     public static void openWeb() {
         Selenide.open("https://stepik.org/catalog");
     }
-
     @ValueSource(strings = {
             "SQL",
             "Python",
@@ -39,7 +34,6 @@ public class WebTest {
                 .find(Condition.text(testData))
                 .shouldBe(visible);
     }
-
     @CsvSource(value = {
             "SQL | Online-курс по основам SQL",
             "Python | Для успешного прохождения курса необходимо знать основы языка Python"
@@ -53,9 +47,7 @@ public class WebTest {
                 .find(Condition.text(testResult))
                 .has(text(testData));
 
-
     }
-
     static Stream<Arguments> checkAuthorsCourse() {
         return Stream.of(
                 Arguments.of("ООП", List.of("Артем Егоров", "Сергей Балакирев", "Артем Егоров")),
@@ -63,8 +55,6 @@ public class WebTest {
         );
 
     }
-
-
     @MethodSource("checkAuthorsCourse")
     @ParameterizedTest
     void checkAuthorsCourse(String searchOption, List<String> courseAuthor) {
