@@ -20,11 +20,13 @@ public class WebTest {
     public static void openWeb() {
         Selenide.open("https://stepik.org/catalog");
     }
+
     @ValueSource(strings = {
             "SQL",
             "Python",
             "Java"
     })
+
     @DisplayName("Проверяем наличие курсов")
     @ParameterizedTest(name = "Check search courses {0}")
     void anySearchTest(String testData) {
@@ -34,11 +36,13 @@ public class WebTest {
                 .find(Condition.text(testData))
                 .shouldBe(visible);
     }
+
     @CsvSource(value = {
             "SQL | Online-курс по основам SQL",
             "Python | Для успешного прохождения курса необходимо знать основы языка Python"
     },
             delimiter = '|')
+
     @DisplayName("Проверка по курсам с csvsource")
     @ParameterizedTest(name = "Проверка по слову {0}, ожидается {1}")
     void anySearchCSVTest(String testData, String testResult) {
@@ -48,6 +52,7 @@ public class WebTest {
                 .has(text(testData));
 
     }
+
     static Stream<Arguments> checkAuthorsCourse() {
         return Stream.of(
                 Arguments.of("ООП", List.of("Артем Егоров", "Сергей Балакирев", "Артем Егоров")),
@@ -55,11 +60,11 @@ public class WebTest {
         );
 
     }
+
     @MethodSource("checkAuthorsCourse")
     @ParameterizedTest
     void checkAuthorsCourse(String searchOption, List<String> courseAuthor) {
         $(".search-form__input").setValue(searchOption).pressEnter();
-
         $$(".catalog-block__content").containsAll(courseAuthor);
 
     }
